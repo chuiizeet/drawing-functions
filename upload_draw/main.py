@@ -60,6 +60,9 @@ def main(req, res):
                 "imageId": image_id,
                 "userId": user_id,
                 "title": title,
+                # * Relationship - Set null
+                "user": user_document_id,
+                "post": post_id,
             },
         )
 
@@ -72,8 +75,8 @@ def main(req, res):
             document_id=user_document_id,
         )
 
-        score = myUser["score"]
-        draws = myUser["draws"]
+        score = myUser.get("score", 0)
+        total_draws = myUser.get("totalDraws", 0)
 
         databases.update_document(
             database_id=DATABASE_ID,
@@ -81,7 +84,7 @@ def main(req, res):
             document_id=user_document_id,
             data={
                 "score": score + 1,
-                "draws": draws + 1,
+                "totalDraws": total_draws + 1,
             },
         )
 
